@@ -1,0 +1,12 @@
+npm init
+npm i express
+npm i prettier
+npm i dotenv
+npm i mongoose
+npm i express
+npm i cookie-parser
+npm i cors (cross origin resource sharing)
+
+npm i mongoose-aggregate-paginate-v2
+npm i bcrypt   // helps to hash your password
+npm i jsonwebtoken
