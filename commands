@@ -10,3 +10,6 @@ npm i cors (cross origin resource sharing)
 npm i mongoose-aggregate-paginate-v2
 npm i bcrypt   // helps to hash your password
 npm i jsonwebtoken
+
+npm i cloudinary
+npm i multer
