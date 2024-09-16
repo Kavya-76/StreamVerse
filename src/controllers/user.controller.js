@@ -15,7 +15,7 @@ const registerUser = asyncHandler( async (req,res)=>{
     // check for user creation
     // return response
     const {username, email, fullName, password} = req.body;
-
+    // username
     if(
         [username, email, fullName, password].some((field)=>
             field?.trim()==="")  // checks if the fiels is empty or not
@@ -31,7 +31,12 @@ const registerUser = asyncHandler( async (req,res)=>{
     }
 
     const avatarLocalPath = req.files?.avatar[0]?.path;
-    const coverImageLocalPath = req.files?.coverImage[0]?.path;
+
+    let coverImageLocalPath;
+    if(req.files && Array.isArray(req.files.coverImage) && req.files.coverImage.length>0)
+    {
+        coverImageLocalPath = req.files.coverImage[0].path;
+    }
 
     if(!avatarLocalPath)
             throw new ApiError(400, "Avatar is required")
@@ -49,7 +54,7 @@ const registerUser = asyncHandler( async (req,res)=>{
         avatar: avatar.url,
         coverImage: coverImage?.url || "",
     })
-    
+    console.log("Hello");
     // finding if user is created or not
     const createdUser = await User.findById(user._id).select(  // the fields written inside select will not be displayed/selected
         "-password -refreshToken"
