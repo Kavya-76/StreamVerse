@@ -15,7 +15,7 @@ const registerUser = asyncHandler( async (req,res)=>{
     // check for user creation
     // return response
     const {username, email, fullName, password} = req.body;
-    
+
     if(
         [username, email, fullName, password].some((field)=>
             field?.trim()==="")  // checks if the fiels is empty or not
@@ -23,7 +23,7 @@ const registerUser = asyncHandler( async (req,res)=>{
         throw new ApiError(400, "all fields are required")
     }
 
-    const existingUser = User.findOne({
+    const existingUser = await User.findOne({
         $or: [{username}, {email}]  // checks if either or username or email already exists
     })  
     if(existingUser){
@@ -38,7 +38,6 @@ const registerUser = asyncHandler( async (req,res)=>{
 
     const avatar = await uploadOnCloudinary(avatarLocalPath);
     const coverImage = await uploadOnCloudinary(coverImageLocalPath);
-
     if(!avatar)
             throw new ApiError(400, "Avatar is required")
 
@@ -50,12 +49,12 @@ const registerUser = asyncHandler( async (req,res)=>{
         avatar: avatar.url,
         coverImage: coverImage?.url || "",
     })
-
+    
     // finding if user is created or not
-    const createdUser = User.findById(user._id).select(  // the fields written inside select will not be displayed/selected
+    const createdUser = await User.findById(user._id).select(  // the fields written inside select will not be displayed/selected
         "-password -refreshToken"
     )
-
+    
     if(!createdUser){
         throw new ApiError(500, "Something went wrong while registering the user")
     }
